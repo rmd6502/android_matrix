@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="1">
+        <GridView android:id="@+id/gridView1" android:numColumns="3" android:layout_height="wrap_content" android:layout_weight="1.04" android:layout_width="wrap_content" android:clickable="true" android:choiceMode="multipleChoice" android:focusable="true"></GridView>
+        <Button android:text="+" android:id="@+id/addColumnButton" android:layout_width="wrap_content" android:layout_height="fill_parent" android:textSize="24sp"></Button>
+    </LinearLayout>
+    <Button android:text="+" android:id="@+id/addRowButton" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="24sp"></Button>
+    <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="match_parent">
+        <Button android:text="Solve" android:id="@+id/solveButton" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+        <Button android:text="Transpose" android:id="@+id/transposeButton" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+    </LinearLayout>
+</LinearLayout>
