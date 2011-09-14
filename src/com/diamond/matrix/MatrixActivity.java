@@ -27,7 +27,6 @@ public class MatrixActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				gridViewA.setNumColumns(gridViewA.getNumColumns()+1);
 				matrixA.addColumn();
 			}
 		});
@@ -57,10 +56,13 @@ public class MatrixActivity extends Activity {
 	public void handleContextMenuClick(MenuItem item, int _pos) {
 		Log.i(LOG_TAG, "item "+item.toString()+" pos "+_pos+" cols "+matrixA.columns);
 		if (item.getTitle().equals("Delete Column")) {
-			gridViewA.setNumColumns(gridViewA.getNumColumns()-1);
 			matrixA.delColumn(_pos % matrixA.columns);
 		} else if (item.getTitle().equals("Delete Row")) {
 			matrixA.delRow(_pos / matrixA.columns);
+		} else if (item.getTitle().equals("Add Row")) {
+			matrixA.addRow(_pos / matrixA.columns);
+		} else if (item.getTitle().equals("Add Column")) {
+			matrixA.addColumn(_pos % matrixA.columns);
 		}
 	}
 }

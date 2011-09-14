@@ -14,6 +14,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
@@ -22,6 +23,7 @@ public class MatrixAdaptor extends BaseAdapter {
 	int columns;
 	NumberFormat nf;
 	LayoutInflater infl;
+	GridView myGrid;
 	static final String LOG_TAG = "MatrixAdapter (no Keanu)";
 	
 	public MatrixAdaptor() {
@@ -40,6 +42,19 @@ public class MatrixAdaptor extends BaseAdapter {
 		return theMatrix.size()/columns;
 	}
 	
+	public int addRow(int beforeRow) {
+		int numRows = theMatrix.size()/columns;
+		if (beforeRow < 0 || beforeRow > numRows) {
+			return -1;
+		}
+		beforeRow *= columns;
+		for (int i=0; i < columns; ++i) {
+			theMatrix.add(beforeRow, 0.0);
+		}
+		notifyDataSetChanged();
+		return numRows + 1;
+	}
+	
 	public int addColumn() {
 		int newSize = theMatrix.size()/columns * (columns + 1);
 		for (int i=columns; i <= newSize; i += columns) {
@@ -47,6 +62,26 @@ public class MatrixAdaptor extends BaseAdapter {
 			++i;
 		}
 		++columns;
+		if (myGrid != null) {
+			myGrid.setNumColumns(columns);
+		}
+		notifyDataSetChanged();
+		return columns;
+	}
+	
+	public int addColumn(int beforeColumn) {
+		if (beforeColumn < 0 || beforeColumn > columns) {
+			return -1;
+		}
+		int newSize = theMatrix.size()/columns * (columns + 1);
+		for (int i=beforeColumn; i <= newSize; i += columns) {
+			theMatrix.add(i, 0.0);
+			++i;
+		}
+		++columns;
+		if (myGrid != null) {
+			myGrid.setNumColumns(columns);
+		}
 		notifyDataSetChanged();
 		return columns;
 	}
@@ -71,8 +106,11 @@ public class MatrixAdaptor extends BaseAdapter {
 			return -1;
 		}
 		--columns;
-		for (int i=colnum+1; i <= theMatrix.size(); i += columns) {
+		for (int i=colnum; i <= theMatrix.size(); i += columns) {
 			theMatrix.removeElementAt(i);
+		}
+		if (myGrid != null) {
+			myGrid.setNumColumns(columns);
 		}
 		notifyDataSetChanged();
 		return 0;
@@ -95,6 +133,9 @@ public class MatrixAdaptor extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		if (myGrid == null) {
+			myGrid = (GridView) parent;
+		}
 		EditText ret = (EditText)convertView;
 		final MatrixActivity _context = (MatrixActivity)parent.getContext();
 		final int _pos = position;
