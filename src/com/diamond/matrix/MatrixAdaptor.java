@@ -1,9 +1,12 @@
 package com.diamond.matrix;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Vector;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +62,7 @@ public class MatrixAdaptor extends BaseAdapter {
 		for (int i=0; i < columns; ++i) {
 			theMatrix.removeElementAt(location);
 		}
+		notifyDataSetChanged();
 		return 0;
 	}
 	
@@ -70,6 +74,7 @@ public class MatrixAdaptor extends BaseAdapter {
 		for (int i=colnum+1; i <= theMatrix.size(); i += columns) {
 			theMatrix.removeElementAt(i);
 		}
+		notifyDataSetChanged();
 		return 0;
 	}
 	
@@ -93,35 +98,62 @@ public class MatrixAdaptor extends BaseAdapter {
 		EditText ret = (EditText)convertView;
 		final MatrixActivity _context = (MatrixActivity)parent.getContext();
 		final int _pos = position;
-		final int _cols = columns;
 		
 		if (ret == null) {
 			if (infl == null) {
 				infl = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			}
 			ret = (EditText) infl.inflate(R.layout.grid_text_view, null);
-			final EditText _ret = ret;
-			ret.setOnLongClickListener(new OnLongClickListener() {
-				
-				@Override
-				public boolean onLongClick(View v) {
-					PopupMenu pm = new PopupMenu(_context, _ret);
-					pm.getMenuInflater().inflate(R.menu.popup, pm.getMenu());
-					pm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-						
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
-							_context.handleContextMenuClick(item, _pos, _cols);
-							return true;
-						}
-					});
-					pm.show();
-					return true;
-				}
-			});
 		}
+		final EditText _ret = ret;
+		ret.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				PopupMenu pm = new PopupMenu(_context, _ret);
+				pm.getMenuInflater().inflate(R.menu.popup, pm.getMenu());
+				pm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+					
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						_context.handleContextMenuClick(item, _pos);
+						return true;
+					}
+				});
+				pm.show();
+				return true;
+			}
+		});
+		
 		ret.setText(nf.format(theMatrix.get(position)));
 		
+		ret.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				Number val = null;
+				try {
+					val = (Number) nf.parse(s.toString());
+					theMatrix.set(_pos, val.doubleValue());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		return ret;
 	}
 
