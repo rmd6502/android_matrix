@@ -93,6 +93,7 @@ public class MatrixAdaptor extends BaseAdapter {
 		EditText ret = (EditText)convertView;
 		final MatrixActivity _context = (MatrixActivity)parent.getContext();
 		final int _pos = position;
+		final int _cols = columns;
 		
 		if (ret == null) {
 			if (infl == null) {
@@ -105,12 +106,13 @@ public class MatrixAdaptor extends BaseAdapter {
 				@Override
 				public boolean onLongClick(View v) {
 					PopupMenu pm = new PopupMenu(_context, _ret);
+					pm.getMenuInflater().inflate(R.menu.popup, pm.getMenu());
 					pm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 						
 						@Override
 						public boolean onMenuItemClick(MenuItem item) {
-							// TODO Auto-generated method stub
-							return false;
+							_context.handleContextMenuClick(item, _pos, _cols);
+							return true;
 						}
 					});
 					pm.show();
