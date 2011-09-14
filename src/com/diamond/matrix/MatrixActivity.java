@@ -3,11 +3,13 @@ package com.diamond.matrix;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
-public class MatrixActivity extends Activity {
+public class MatrixActivity extends Activity implements OnMenuItemClickListener {
     /** Called when the activity is first created. */
 	GridView gridViewA;
 	MatrixAdaptor matrixA;
@@ -52,4 +54,10 @@ public class MatrixActivity extends Activity {
 			}
 		});
     }
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
