@@ -1,5 +1,6 @@
 package com.diamond.matrix;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Vector;
@@ -7,6 +8,7 @@ import java.util.Vector;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +35,19 @@ public class MatrixAdaptor extends BaseAdapter {
 		theMatrix = new Vector<Double>();
 		addRow();
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public MatrixAdaptor(Serializable serializable, int int1) {
+		try {
+			theMatrix = (Vector<Double>)serializable;
+		} catch (ClassCastException e) {
+			Log.e(LOG_TAG, "Failed to extract serializable");
+			return;
+		}
+		columns = int1;
+		nf = NumberFormat.getNumberInstance();
+	}
+
 	public int addRow() {
 		for (int i=0; i < columns; ++i) {
 			theMatrix.add(0.0);
@@ -145,6 +159,8 @@ public class MatrixAdaptor extends BaseAdapter {
 				infl = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			}
 			ret = (EditText) infl.inflate(R.layout.grid_text_view, null);
+		} else {
+			ret.removeTextChangedListener((TextWatcher)ret.getTag());
 		}
 		final EditText _ret = ret;
 		ret.setOnLongClickListener(new OnLongClickListener() {
@@ -168,7 +184,7 @@ public class MatrixAdaptor extends BaseAdapter {
 		
 		ret.setText(nf.format(theMatrix.get(position)));
 		
-		ret.addTextChangedListener(new TextWatcher() {
+		TextWatcher tw = new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -194,8 +210,14 @@ public class MatrixAdaptor extends BaseAdapter {
 				// TODO Auto-generated method stub
 				
 			}
-		});
+		};
+		ret.addTextChangedListener(tw);
+		ret.setTag(tw);
 		return ret;
+	}
+
+	public Vector<Double> getDoubleArray() {
+		return theMatrix;
 	}
 
 }

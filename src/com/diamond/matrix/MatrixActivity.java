@@ -20,8 +20,13 @@ public class MatrixActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         gridViewA = (GridView) findViewById(R.id.gridView1);
-        matrixA = new MatrixAdaptor();
+        if (savedInstanceState != null && savedInstanceState.containsKey("matrixA")) {
+        	matrixA = new MatrixAdaptor(savedInstanceState.getSerializable("matrixA"), savedInstanceState.getInt("columnsA"));
+        } else {
+        	matrixA = new MatrixAdaptor();
+        }
         gridViewA.setAdapter(matrixA);
+        gridViewA.setNumColumns(matrixA.columns);
         Log.i(LOG_TAG, "columns in gridview "+gridViewA.getNumColumns());
         findViewById(R.id.addColumnButton).setOnClickListener(new OnClickListener() {
 			
@@ -51,6 +56,12 @@ public class MatrixActivity extends Activity {
 				
 			}
 		});
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	outState.putSerializable("matrixA", matrixA.getDoubleArray());
+    	outState.putInt("columnsA", matrixA.columns);
     }
 
 	public void handleContextMenuClick(MenuItem item, int _pos) {
