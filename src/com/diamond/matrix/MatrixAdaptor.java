@@ -39,14 +39,15 @@ public class MatrixAdaptor extends BaseAdapter {
 
 	@SuppressWarnings("unchecked")
 	public MatrixAdaptor(Serializable serializable, int int1) {
+		columns = int1;
+		nf = NumberFormat.getNumberInstance();
 		try {
 			theMatrix = (Vector<Double>)serializable;
 		} catch (ClassCastException e) {
+			theMatrix = new Vector<Double>();
 			Log.e(LOG_TAG, "Failed to extract serializable");
-			return;
+			addRow();
 		}
-		columns = int1;
-		nf = NumberFormat.getNumberInstance();
 	}
 
 	public int addRow() {
