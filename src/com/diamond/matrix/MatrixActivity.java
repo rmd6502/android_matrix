@@ -46,7 +46,8 @@ public class MatrixActivity extends Activity {
 	
 			@Override
 			public void onClick(View v) {
-				
+				new Solver(matrixA).solve();
+				matrixA.updateMatrix();
 			}
 		});
         findViewById(R.id.transposeButton).setOnClickListener(new OnClickListener() {

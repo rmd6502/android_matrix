@@ -240,5 +240,9 @@ public class MatrixAdaptor extends BaseAdapter {
 		columns = newColumns;
 		notifyDataSetChanged();
 	}
+	
+	public void updateMatrix() {
+		notifyDataSetChanged();
+	}
 
 }
