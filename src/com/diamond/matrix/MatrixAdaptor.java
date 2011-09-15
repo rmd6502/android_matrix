@@ -132,7 +132,7 @@ public class MatrixAdaptor extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return theMatrix.size();
+		return theMatrix == null ? 0 : theMatrix.size();
 	}
 
 	@Override
@@ -218,6 +218,12 @@ public class MatrixAdaptor extends BaseAdapter {
 
 	public Vector<Double> getDoubleArray() {
 		return theMatrix;
+	}
+	
+	public void replaceMatrix(Vector<Double> newMatrix, int newColumns) {
+		theMatrix = newMatrix;
+		columns = newColumns;
+		notifyDataSetChanged();
 	}
 
 }
