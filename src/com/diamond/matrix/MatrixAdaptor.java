@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.view.View.OnFocusChangeListener;
 
 public class MatrixAdaptor extends BaseAdapter {
 	Vector<Double> theMatrix;
@@ -193,7 +194,6 @@ public class MatrixAdaptor extends BaseAdapter {
 					val = (Number) nf.parse(s.toString());
 					theMatrix.set(_pos, val.doubleValue());
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -201,18 +201,33 @@ public class MatrixAdaptor extends BaseAdapter {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 				
 			}
 		};
 		ret.addTextChangedListener(tw);
 		ret.setTag(tw);
+		
+		ret.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					// if we lost the focus, reformat the number
+					_ret.setText(nf.format(theMatrix.get(_pos)));
+				} else {
+					if (theMatrix.get(_pos) == 0) {
+						_ret.setText("");
+					} else {
+						_ret.selectAll();
+					}
+				}
+			}
+		});
 		return ret;
 	}
 
