@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Delete Column" android:id="@+id/delColumn" android:alphabeticShortcut="c"></item>
+    <item android:title="Delete Row" android:id="@+id/delRow" android:alphabeticShortcut="r"></item>
+    <item android:title="Add Column" android:id="@+id/addColumn" android:alphabeticShortcut="i"></item>
+    <item android:title="Add Row" android:id="@+id/addRow" android:alphabeticShortcut="a"></item>
+    <item android:title="Cancel" android:id="@+id/cancel"></item>
+    
+</menu>
